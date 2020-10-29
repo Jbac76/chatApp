@@ -1,3 +1,7 @@
+<h5>Suggested Friends</h5>
+
+<hr>
+
 @if( $find_friend->count() )
 
     <div class="card rounded-0">

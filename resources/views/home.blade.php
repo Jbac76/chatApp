@@ -27,13 +27,11 @@
                             @include('includes.following')
                         </div>
 
-                        {{-- those auth user can follow --}}
+                        {{-- suggested friends --}}
                         <div class="col-3 find-friends-container">
-                            <h5>Suggested Friends</h5>
-
-                            <hr>
-
+                          
                             @include('includes.suggested_friends')
+
                         </div>
                     </div>
                 </div>
