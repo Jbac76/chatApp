@@ -8,6 +8,7 @@ use App\Models\Follow;
 use App\Models\Profile;
 use App\Models\FollowRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -110,21 +111,33 @@ class ProfileController extends Controller
      */
     public function password( Request $request )
     {
-        $request->validate([
+        $rules = [
             'oldpassword'=>'required',
             'password'=>'required|string|min:8|confirmed',
-        ]);
-        
-        if ( Auth::attempt(['email' => auth()->user()->email, 'password' => $request->input('password')]) ) 
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        $validator->after(function ($validator) use($request) {
+            if (Auth::attempt(['email' => auth()->user()->email, 'password' => $request->input('password')])) 
+            {
+                $user = User::find(auth()->id());
+                $user->password = Hash::make($request->input('password'));
+
+                $user->save();
+
+            }else{
+
+                $validator->errors()->add('oldpassword', 'Opps! Incorrect old password!');
+            }
+        });
+
+        if ($validator->fails()) 
         {
-            $user = User::find(auth()->id());
-            $user->password = Hash::make($request->input('password'));
-
-            $user->save();
-
+            return redirect()->back()->withErrors($validator)->withInput();
+        }else{
             return redirect()->back()->with('info', 'Password Updated');
         }
-        
     }
 
     /**
