@@ -38,11 +38,13 @@ class ProfileController extends Controller
         }
         $posts = Post::where('user_id', $user->id)->orderBy('created_at', 'desc')->limit(15)->get();
 
-        $followers = Follow::where('following_id', $user->id)->pluck('follower_id');
+        $followingIds = Follow::where('follower_id', $user->id )->pluck('following_id');
+        $fansIds = Follow::where('following_id', $user->id )->pluck('follower_id');
 
-        $fans = User::whereIn('id', $followers)->where('id', '!=', auth()->id() )->get();
+        $fans = User::whereIn('id', $fansIds)->get();
+        $following = User::whereIn('id', $followingIds)->whereNotIn('id', $fansIds)->get();
 
-        return view('profile.index', compact('user', 'posts', 'fans'));
+        return view('profile.index', compact('user', 'posts', 'following', 'fans'));
     }
 
     /**

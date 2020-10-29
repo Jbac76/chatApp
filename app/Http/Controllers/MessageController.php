@@ -28,16 +28,15 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $follow = Follow::where('follower_id', auth()->id() )->pluck('following_id');
-        $fans = Follow::where('following_id', auth()->id() )->pluck('follower_id');
+        $followingIds = Follow::where('follower_id', auth()->id() )->pluck('following_id');
+        $fansIds = Follow::where('following_id', auth()->id() )->pluck('follower_id');
 
-        $friends = User::whereIn('id', $follow)->orWhereIn('id', $fans)->get();
+        $fans = User::whereIn('id', $fansIds)->get();
+        $following = User::whereIn('id', $followingIds)->get();
 
         $messages = Message::where( 'from', auth()->id() )->orWhere( 'to', auth()->id() )->get();
 
-        // $threads = 
-
-        return view('message.index', compact('friends', 'messages'));
+        return view('message.index', compact('following', 'messages'));
     }
 
     /**
@@ -49,10 +48,11 @@ class MessageController extends Controller
     {
         $user_to = User::findOrFail($user_id);
 
-        $follow = Follow::where('follower_id', auth()->id() )->pluck('following_id');
-        $fans = Follow::where('following_id', auth()->id() )->pluck('follower_id');
+        $followingIds = Follow::where('follower_id', auth()->id() )->pluck('following_id');
+        $fansIds = Follow::where('following_id', auth()->id() )->pluck('follower_id');
 
-        $friends = User::whereIn('id', $follow)->orWhereIn('id', $fans)->get();
+        $fans = User::whereIn('id', $fansIds)->get();
+        $following = User::whereIn('id', $followingIds)->whereNotIn('id', $fansIds)->get();
 
         $messages = Message::where( 'from', $user_to->id)->where( 'to', auth()->id() )
                             ->orWhere(function ($query) use($user_to) {
@@ -61,7 +61,7 @@ class MessageController extends Controller
                                 })
                             ->get();
 
-        return view( 'message.create', compact('user_to', 'messages', 'friends') );
+        return view( 'message.create', compact('user_to', 'messages', 'following') );
     }
 
     /**

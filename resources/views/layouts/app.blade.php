@@ -41,9 +41,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('message') }}">Messages</a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link" href="#">Notifications</a>
-                        </li>
+                        </li> --}}
                     </ul>
                       
                     <form class="form-inline my-2 my-lg-0" action="{{ route('search')}}" method="GET">

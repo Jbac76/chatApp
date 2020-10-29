@@ -36,12 +36,14 @@ class HomeController extends Controller
                             ->limit(6)
                             ->get();
 
+        $following = User::whereIn('id', $follow)->get();
+
         $posts = Post::whereIn('user_id', $follow)
                         ->orWhere('user_id', auth()->id() )
                         ->orderBy('created_at', 'desc')
                         ->limit(15)
                         ->get();
 
-        return view('home', compact('find_friend', 'posts'));
+        return view('home', compact('find_friend', 'following', 'posts'));
     }
 }
