@@ -12,25 +12,27 @@
                     <div class="row">
                         <div class="col-6 main-activity-container">
 
-                            <h5>Status Update</h5>
+                            {{-- post form --}}
+                            @include('post.post_form')
 
-                            @include('includes.post_form')
+                            {{-- renders posts and comments --}}
+                            @include('post.posts')
 
-                            @include('includes.posts')
                         </div>
 
                         {{-- those auth user follows --}}
                         <div class="col-3 find-friends-container">
 
-                            <h5>Following</h5>
+                            {{-- users followed by auth user --}}
+                            @include('friends.following')
 
-                            @include('includes.following')
                         </div>
 
                         {{-- suggested friends --}}
                         <div class="col-3 find-friends-container">
                           
-                            @include('includes.suggested_friends')
+                            {{-- suggested friends --}}
+                            @include('friends.suggested_friends')
 
                         </div>
                     </div>

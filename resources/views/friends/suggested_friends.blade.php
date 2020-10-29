@@ -1,17 +1,18 @@
+<h5>Suggested Friends</h5>
+
 <hr>
 
-@if( $following->count() )
+@if( $find_friend->count() )
 
     <div class="card rounded-0">
+
         <ul class="list-group list-group-flush">
 
-            @foreach( $following as $friend )
+            @foreach( $find_friend as $friend )
 
                 <li class="list-group-item">
                     <div class="media">
-                        
                         <img class="align-self-start mr-3 default-dp" src="{{ asset('/img/default.gif') }}" alt="dp">
-                        
                         <div class="media-body">
                             <a href="{{ route('profile', [$friend->uname]) }}"><h6 class="mt-0 mb-0">{{ $friend->name }}</h6></a>
 

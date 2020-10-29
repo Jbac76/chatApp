@@ -51,10 +51,10 @@
                     <hr>
 
                     {{-- comment container --}}
-                    @include('includes.comments')
+                    @include('post.comments')
 
                     {{-- comment form --}}
-                    @include('includes.comment_form')
+                    @include('post.comment_form')
                 </div>
             </div>
         </div>
